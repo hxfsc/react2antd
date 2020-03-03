@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const FilterWarningsPlugin = require("webpack-filter-warnings-plugin")
 const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 
+const tsAntdConfig = require("./antd.common")
 const webpack = require("webpack")
 
 module.exports = {
@@ -22,7 +23,29 @@ module.exports = {
       {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
-        use: [{ loader: "ts-loader" }]
+        use: [
+          {
+            loader: "ts-loader",
+            options: {
+              experimentalWatchApi: true,
+              transpileOnly: true,
+              getCustomTransformers: () => tsAntdConfig()
+            }
+          }
+        ]
+      },
+      {
+        test: /\.less$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          {
+            loader: "less-loader",
+            options: {
+              javascriptEnabled: true
+            }
+          }
+        ]
       },
       {
         test: /\.css$/,
