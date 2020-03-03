@@ -1,8 +1,8 @@
 const path = require("path")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
-const CleanWebpackPlugin = require("clean-webpack-plugin")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const FilterWarningsPlugin = require("webpack-filter-warnings-plugin")
+const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 
 const webpack = require("webpack")
 
@@ -10,7 +10,7 @@ module.exports = {
   entry: [path.resolve(__dirname, "../src/index.tsx")],
   output: {
     filename: "[name].bundle.js",
-    path: path.resolve(__dirname, "dist")
+    path: path.resolve(__dirname, "../dist")
   },
 
   resolve: {
@@ -18,11 +18,16 @@ module.exports = {
   },
 
   module: {
-    rule: [
+    rules: [
+      {
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        use: [{ loader: "ts-loader" }]
+      },
       {
         test: /\.css$/,
         exclude: /node_modules/,
-        use: ["style-loader", "css-loader"]
+        use: [MiniCssExtractPlugin.loader, "css-loader"]
       },
       {
         test: /\.(jpg|jpeg|png|svg|gif)$/,
@@ -30,8 +35,8 @@ module.exports = {
         use: [
           {
             loader: "file-loader",
-            name: "[hash:8].[name].[ext]",
             options: {
+              name: "[hash:8].[name].[ext]",
               limit: 10240
             }
           }
@@ -47,7 +52,8 @@ module.exports = {
 
   plugins: [
     new webpack.WatchIgnorePlugin([/css\.d\.ts$/]),
-    CleanWebpackPlugin(),
+    new CleanWebpackPlugin(),
+
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "../src/index.html")
     }),
