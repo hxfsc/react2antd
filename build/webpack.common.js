@@ -1,10 +1,15 @@
 const path = require("path")
+//html文件模板
 const HtmlWebpackPlugin = require("html-webpack-plugin")
+//抽离样式文件
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+//过滤抽离样式文件警告信息
 const FilterWarningsPlugin = require("webpack-filter-warnings-plugin")
+//清除生成项目文件
 const { CleanWebpackPlugin } = require("clean-webpack-plugin")
-
+//antd 按需配置设置
 const tsAntdConfig = require("./antd.common")
+
 const webpack = require("webpack")
 
 module.exports = {
@@ -29,6 +34,7 @@ module.exports = {
             options: {
               experimentalWatchApi: true,
               transpileOnly: true,
+              /* antd 按需加载 */
               getCustomTransformers: () => tsAntdConfig()
             }
           }
@@ -36,6 +42,7 @@ module.exports = {
       },
       {
         test: /\.less$/,
+        include: /node_modules\/antd/,
         use: [
           MiniCssExtractPlugin.loader,
           "css-loader",
@@ -45,6 +52,26 @@ module.exports = {
               javascriptEnabled: true
             }
           }
+        ]
+      },
+      {
+        test: /\.(scss|sass)$/,
+        exclude: /node_modules/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-modules-typescript-loader", //生成css @types文件
+          {
+            loader: "css-loader",
+            options: {
+              modules: {
+                mode: "local",
+                localIdentName: "[local]_[hash:base64:5]"
+              },
+              sourceMap: true
+            }
+          },
+          { loader: "postcss-loader" },
+          { loader: "sass-loader", options: { sourceMap: true } }
         ]
       },
       {
@@ -74,7 +101,9 @@ module.exports = {
   },
 
   plugins: [
+    //生成 css @types文件
     new webpack.WatchIgnorePlugin([/css\.d\.ts$/]),
+
     new CleanWebpackPlugin(),
 
     new HtmlWebpackPlugin({
