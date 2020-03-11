@@ -1,5 +1,7 @@
 import * as React from "react"
-import { Route, Switch, Redirect } from "react-router-dom"
+import { Route, Switch, Redirect, Link } from "react-router-dom"
+import loadable from "@loadable/component"
+
 import { Layout, Menu } from "antd"
 import {
   MenuUnfoldOutlined,
@@ -12,9 +14,8 @@ import {
 const { Header, Sider, Content, Footer } = Layout
 
 
-import Dashboard from "../pages/dashboard"
-import Charts from "../pages/charts"
-
+const Dashboard = loadable(() => import("../pages/dashboard"))
+const Charts = loadable(() => import("../pages/charts"))
 
 import * as styles from "./styles.scss"
 
@@ -37,12 +38,16 @@ class MainLayout extends React.Component {
           <div className={styles["logo"]} />
           <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
             <Menu.Item key="1">
-              <UserOutlined />
-              <span>nav 1</span>
+              <Link to={"/dashboard"}>
+                <UserOutlined />
+                <span>nav 1</span>
+              </Link>
             </Menu.Item>
             <Menu.Item key="2">
-              <VideoCameraOutlined />
-              <span>nav 2</span>
+              <Link to={"/charts"}>
+                <VideoCameraOutlined />
+                <span>nav 2</span>
+              </Link>
             </Menu.Item>
             <Menu.Item key="3">
               <UploadOutlined />
