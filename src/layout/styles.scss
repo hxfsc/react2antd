@@ -25,7 +25,15 @@
 }
 
 .site-layout-main {
-  margin: 24px 16px;
+  margin: 16px 16px 24px;
   padding: 24px;
   min-height: 280px;
+}
+
+.breadcrumb {
+  margin: 16px 16px 0;
+}
+
+.menu {
+  color: #fff;
 }

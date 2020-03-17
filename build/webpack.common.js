@@ -20,7 +20,12 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ["*", ".js", ".jsx", ".ts", ".tsx"]
+    extensions: ["*", ".js", ".jsx", ".ts", ".tsx"],
+    alias: {
+      "@/": path.resolve(__dirname, "../src"),
+      "@/routers": path.resolve(__dirname, "../src/routers"),
+      "@/pages": path.resolve(__dirname, "../src/pages")
+    }
   },
 
   module: {
