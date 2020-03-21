@@ -5,23 +5,40 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
   MailOutlined
 } from "@ant-design/icons"
 
+
+
 const { Header, Sider, Content, Footer } = Layout
 
-import { router, IRouter } from "@/routers/index"
-
-import Dashboard from "@/pages/dashboard"
-import Charts from "@/pages/charts"
+import { router, flatToMenu, routerMatchMenu, routerMatchBreadcrumb, IRouter } from "@/routers/index"
+import { urlPath, urlPathToList } from "@/utils/urlPathParams"
 
 import * as styles from "./styles.scss"
 
+import { ClickParam } from "antd/lib/menu"
+
+
 class MainLayout extends React.Component {
+
+  private routerList: React.ReactNode[] = []
+
   state = {
-    collapsed: false
+    collapsed: false,
+    selectedKeys: [],
+    openKeys: []
+  }
+
+  componentDidMount() {
+    const url = urlPath()
+    const urlList = urlPathToList(url)
+    const flatMenu = flatToMenu(router)
+
+    this.setState({
+      selectedKeys: routerMatchMenu(flatMenu, urlList),
+      openKeys: urlList
+    })
   }
 
   toggle = () => {
@@ -34,13 +51,13 @@ class MainLayout extends React.Component {
     const menu = router.map((item: IRouter, index: number): React.ReactNode => {
       if (item.children && item.children.length > 0) {
         return (
-          <Menu.SubMenu key={`${item.path}-${index}`} title={<span><MailOutlined />{item.name ?? "导航"}</span>}>
+          <Menu.SubMenu key={item.path} title={<span><MailOutlined />{item.name ?? "导航"}</span>}>
             {this.renderMenu(item.children)}
           </Menu.SubMenu>
         )
       }
       return (
-        <Menu.Item key={`${item.path}-${index}`}>
+        <Menu.Item key={item.path}>
           <Link to={item.path} className={styles["menu"]}>
             <UserOutlined />
             <span>{item.name ?? "导航"}</span>
@@ -52,12 +69,50 @@ class MainLayout extends React.Component {
     return menu
   }
 
+
+  renderRouter = (router: IRouter[]): React.ReactNode => {
+    router.forEach((item: IRouter) => {
+      if (item.children) {
+        this.renderRouter(item.children)
+      }
+      if (item.component) {
+        this.routerList.push(<Route path={item.path} component={item.component} key={item.path} />)
+      }
+    })
+    return this.routerList
+  }
+
+  renderBreadcrumb = (): React.ReactNode => {
+    const url = urlPath()
+    const urlList = urlPathToList(url)
+
+    const breadcrumbs: IRouter[] = routerMatchBreadcrumb(router, urlList)
+
+    return breadcrumbs.map((item: IRouter, index: number) => <Breadcrumb.Item key={index}>{item.name}</Breadcrumb.Item>)
+  }
+
+  handleOpenChangeMenu = (openKeys: string[]): void => {
+    this.setState({ openKeys })
+  }
+
+  handleClickMenu = (parma: ClickParam): void => {
+    const { keyPath: openKeys, key: selectedKeys } = parma
+    this.setState({ selectedKeys, openKeys })
+  }
+
   render() {
+    const { selectedKeys, openKeys } = this.state
     return (
       <Layout className={styles["dashboard"]}>
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
           <div className={styles["logo"]} />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
+          <Menu
+            theme="dark"
+            mode="inline"
+            openKeys={openKeys}
+            selectedKeys={selectedKeys}
+            onClick={this.handleClickMenu}
+            onOpenChange={this.handleOpenChangeMenu}>
             {this.renderMenu(router)}
           </Menu>
         </Sider>
@@ -75,22 +130,14 @@ class MainLayout extends React.Component {
           </Header>
 
           <Breadcrumb className={styles["breadcrumb"]}>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>
-              <a href="">Application Center</a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>
-              <a href="">Application List</a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>An Application</Breadcrumb.Item>
+            {this.renderBreadcrumb()}
           </Breadcrumb>
 
           <Content
             className={`${styles["site-layout-background"]} ${styles["site-layout-main"]}`}>
             <Switch>
-              <Route path={"/dashboard"} exact component={Dashboard} />
-              <Route path={"/charts"} exact component={Charts} />
-              <Route path={"/"} exact component={Dashboard} />
+              {this.renderRouter(router)}
+              <Redirect path={"/"} exact to={{ pathname: "/dashboard/analysis/realtime" }} />
               <Redirect to={{ pathname: "/404" }} />
             </Switch>
           </Content>

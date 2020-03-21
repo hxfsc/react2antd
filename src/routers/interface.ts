@@ -15,6 +15,11 @@ interface IRouter {
   path: string
 
   /**
+   * @param {React.Component} component 路由对应组件
+  */
+  component?:any
+
+  /**
    * @param {IRouter} children 子路由
    */
   children?: IRouter[]

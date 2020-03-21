@@ -16,7 +16,8 @@
     "paths": {
       "@/*": ["src*"],
       "@/routers*": ["src/routers*"],
-      "@/pages*": ["src/pages*"]
+      "@/pages*": ["src/pages*"],
+      "@/utils*": ["src/utils*"]
     }
   },
   "exclude": ["node_modules", "dist"],
