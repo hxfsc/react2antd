@@ -25,9 +25,13 @@ class MainLayout extends React.Component {
   private routerList: React.ReactNode[] = []
 
   state = {
-    collapsed: false,
+    collapsed: true,
     selectedKeys: [],
     openKeys: []
+  }
+
+  constructor(props) {
+    super(props)
   }
 
   componentDidMount() {
@@ -39,11 +43,15 @@ class MainLayout extends React.Component {
       selectedKeys: routerMatchMenu(flatMenu, urlList),
       openKeys: urlList
     })
+
+    fetch("/data").then(data=>console.log(data))
   }
 
-  toggle = () => {
+
+  toggleCollapsed = () => {
+    const { collapsed } = this.state
     this.setState({
-      collapsed: !this.state.collapsed
+      collapsed: !collapsed
     })
   }
 
@@ -51,16 +59,17 @@ class MainLayout extends React.Component {
     const menu = router.map((item: IRouter, index: number): React.ReactNode => {
       if (item.children && item.children.length > 0) {
         return (
-          <Menu.SubMenu key={item.path} title={<span><MailOutlined />{item.name ?? "导航"}</span>}>
+          <Menu.SubMenu key={item.path} title={<span><MailOutlined /> <span>{item.name ?? "导航"}</span> </span>}>
             {this.renderMenu(item.children)}
           </Menu.SubMenu>
         )
       }
       return (
-        <Menu.Item key={item.path}>
+        <Menu.Item key={item.path} title={item.name ?? "导航"}>
           <Link to={item.path} className={styles["menu"]}>
-            <UserOutlined />
-            <span>{item.name ?? "导航"}</span>
+            <span>
+              {item.name ?? "导航"}
+            </span>
           </Link>
         </Menu.Item >
       )
@@ -101,10 +110,10 @@ class MainLayout extends React.Component {
   }
 
   render() {
-    const { selectedKeys, openKeys } = this.state
+    const { selectedKeys, openKeys, collapsed } = this.state
     return (
       <Layout className={styles["dashboard"]}>
-        <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
+        <Sider trigger={null} collapsible collapsed={collapsed}>
           <div className={styles["logo"]} />
           <Menu
             theme="dark"
@@ -112,6 +121,7 @@ class MainLayout extends React.Component {
             openKeys={openKeys}
             selectedKeys={selectedKeys}
             onClick={this.handleClickMenu}
+            inlineCollapsed={collapsed}
             onOpenChange={this.handleOpenChangeMenu}>
             {this.renderMenu(router)}
           </Menu>
@@ -124,7 +134,7 @@ class MainLayout extends React.Component {
               this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
               {
                 className: styles["trigger"],
-                onClick: this.toggle
+                onClick: this.toggleCollapsed
               }
             )}
           </Header>

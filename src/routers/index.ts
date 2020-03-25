@@ -39,17 +39,6 @@ const routerMatchMenu = (flatMenu: IRouter[] = [], urlPaths: string[] = []): str
   return []
 }
 
-
-const flatRouters = (routers: IRouter[]): IRouter[] => {
-  return routers.reduce((prev: IRouter[], next: IRouter): IRouter[] => {
-    prev.push(next)
-    if (next.children) {
-      return [...prev, ...flatRouters(next.children)]
-    }
-    return prev
-  }, [])
-}
-
 const routerMatchBreadcrumb = (routers: IRouter[], urlPaths: string[]): IRouter[] => {
   const flatRouters = flatToMenu(routers)
   return urlPaths.map((item:string):IRouter=>{
