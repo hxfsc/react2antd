@@ -26,7 +26,8 @@ module.exports = {
       "@/": path.resolve(__dirname, "../src"),
       "@/utils": path.resolve(__dirname, "../src/utils"),
       "@/routers": path.resolve(__dirname, "../src/routers"),
-      "@/pages": path.resolve(__dirname, "../src/pages")
+      "@/pages": path.resolve(__dirname, "../src/pages"),
+      "@/net": path.resolve(__dirname, "../src/net")
     }
   },
 

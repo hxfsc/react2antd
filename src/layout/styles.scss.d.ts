@@ -3,10 +3,12 @@
 interface CssExports {
   'breadcrumb': string;
   'dashboard': string;
+  'footer': string;
+  'header': string;
   'logo': string;
+  'main': string;
   'menu': string;
-  'site-layout-background': string;
-  'site-layout-main': string;
+  'sider': string;
   'trigger': string;
 }
 export const cssExports: CssExports;

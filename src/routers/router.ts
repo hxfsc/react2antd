@@ -1,6 +1,7 @@
 import Loadable from "react-loadable"
 import { IRouter } from "./interface"
 
+
 import Loading from "@/pages/loading"
 
 const Realtime = Loadable({
@@ -28,8 +29,8 @@ const Table2 = Loadable({
 const router: IRouter[] = [
   {
     name: "仪表盘",
-    icon: "dashboard",
     path: "dashboard",
+    parent: true,
     children: [
       {
         name: "分析页",
@@ -53,6 +54,7 @@ const router: IRouter[] = [
     name: "表格",
     icon: "dashboard",
     path: "table",
+    parent: true,
     children: [
       {
         name: "基本",
@@ -76,6 +78,13 @@ const router: IRouter[] = [
         component: Table2
       }
     ]
+  },
+  {
+    name: "图表",
+    icon: "dashboard",
+    path: "charts",
+    parent: true,
+    component: Table2
   }
 ]
 

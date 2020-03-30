@@ -10,6 +10,10 @@ interface IRouter {
   icon?: string
 
   /**
+   * @param {boolean} parent 父级
+   */
+  parent?: boolean
+  /**
    * @param {string} path 路由路径
    */
   path: string
