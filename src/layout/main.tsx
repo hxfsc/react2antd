@@ -1,10 +1,12 @@
 import * as React from "react"
-import { Route, Switch, Redirect, Link } from "react-router-dom"
-import { Layout, Menu, Breadcrumb } from "antd"
+import { Route, Switch, Redirect, Link, RouteComponentProps } from "react-router-dom"
+import { Layout, Menu, Breadcrumb, Avatar, Dropdown } from "antd"
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  UserOutlined
+  UserOutlined,
+  LogoutOutlined,
+  KeyOutlined
 } from "@ant-design/icons"
 
 
@@ -18,7 +20,11 @@ import * as styles from "./styles.scss"
 import { ClickParam } from "antd/lib/menu"
 
 import { stylePadding0, styleFooter, styleMain } from "./styles"
-class MainLayout extends React.Component {
+
+interface IProps extends RouteComponentProps { }
+
+interface IState { }
+class MainLayout extends React.Component<IProps, IState> {
 
   private routerList: React.ReactElement[] = []
 
@@ -136,6 +142,22 @@ class MainLayout extends React.Component {
     this.setState({ selectedKeys, openKeys })
   }
 
+  renderDropDownItem = () => {
+
+    const logout = () => {
+      const { history: { push } } = this.props
+      push("/login")
+    }
+
+    return (
+      <Menu>
+        <Menu.Item key="1"><UserOutlined />个人中心</Menu.Item>
+        <Menu.Item key="2"><KeyOutlined />修改密码</Menu.Item>
+        <Menu.Item key="3" onClick={logout}><LogoutOutlined />退出</Menu.Item>
+      </Menu>
+    )
+  }
+
   render() {
     const { selectedKeys, openKeys, collapsed } = this.state
     return (
@@ -155,13 +177,14 @@ class MainLayout extends React.Component {
 
         <Layout className={styles["site-layout"]} style={{ marginLeft: collapsed ? "80px" : "200px" }}>
           <Header className={styles["header"]} style={stylePadding0}>
-            {React.createElement(
-              this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-              {
-                className: styles["trigger"],
-                onClick: this.toggleCollapsed
-              }
-            )}
+            <div>
+              {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, { className: styles["trigger"], onClick: this.toggleCollapsed })}
+            </div>
+            <div className={styles["user"]}>
+              <Dropdown overlay={this.renderDropDownItem} placement={"bottomLeft"}>
+                <Avatar size={"large"} className={styles["avatar"]}>hxfsc</Avatar>
+              </Dropdown>
+            </div>
           </Header>
           <Breadcrumb className={styles["breadcrumb"]}>
             {this.renderBreadcrumb()}

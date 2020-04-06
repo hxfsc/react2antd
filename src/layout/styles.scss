@@ -46,3 +46,16 @@
 .footer {
   text-align: center;
 }
+
+.header{
+  display: flex;
+  justify-content: space-between;
+
+  .user{
+    margin-right: 24px;
+  }
+
+  .avatar{
+    cursor: pointer;
+  }
+}
