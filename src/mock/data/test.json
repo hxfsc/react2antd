@@ -1,17 +1,3 @@
-### react antd 脚手架
-- koa
-- react 16.9
-- antd 4
-- typescript
-- mockjs
-
-### mock
-
-运行 `npm run mock`
-
-新建mock文件在 `./src/mock/data/mock.json` 目录
-
-```json
 {
   "code": 200,
   "data|1-9": [
@@ -28,5 +14,3 @@
     }
   ]
 }
-```
-接口地址为 `http:localhost:9001/mock`

@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import MainLayout from "./layout/main"
 import Login from "./pages/login"
 import NoFund from "./pages/nofund"
+
 class App extends React.Component {
 
   render() {

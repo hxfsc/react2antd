@@ -16,11 +16,19 @@ module.exports = {
   entry: [path.resolve(__dirname, "../src/index.tsx")],
   output: {
     filename: "[name].bundle.js",
-    path: path.resolve(__dirname, "../dist")
+    path: path.resolve(__dirname, "../dist"),
+    publicPath: "/"
   },
 
   resolve: {
-    extensions: ["*", ".js", ".jsx", ".ts", ".tsx"]
+    extensions: ["*", ".js", ".jsx", ".ts", ".tsx"],
+    alias: {
+      "@/": path.resolve(__dirname, "../src"),
+      "@/utils": path.resolve(__dirname, "../src/utils"),
+      "@/routers": path.resolve(__dirname, "../src/routers"),
+      "@/pages": path.resolve(__dirname, "../src/pages"),
+      "@/net": path.resolve(__dirname, "../src/net")
+    }
   },
 
   module: {

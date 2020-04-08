@@ -20,12 +20,42 @@
   margin: 16px;
 }
 
-.site-layout-background {
+
+.sider {
+  min-height: 100vh;
+  position: fixed;
+  top: 0;
+}
+
+.breadcrumb {
+  margin-top: 16px;
+  padding: 0 16px;
+}
+
+.menu {
+  color: #fff;
+}
+
+
+.header,
+.footer,
+.main {
   background: #fff;
 }
 
-.site-layout-main {
-  margin: 24px 16px;
-  padding: 24px;
-  min-height: 280px;
+.footer {
+  text-align: center;
+}
+
+.header{
+  display: flex;
+  justify-content: space-between;
+
+  .user{
+    margin-right: 24px;
+  }
+
+  .avatar{
+    cursor: pointer;
+  }
 }
