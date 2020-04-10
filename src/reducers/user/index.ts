@@ -28,7 +28,7 @@ export type ActionUserType = IActionLogin | IActionLogout
 
 const initialState = {}
 
-export const reducer = (state = initialState, action: ActionUserType) => {
+const reducer = (state = initialState, action: ActionUserType) => {
 
   switch (action.type) {
     case actionsUserConstants.USER_LOGIN: {
@@ -44,5 +44,7 @@ export const reducer = (state = initialState, action: ActionUserType) => {
       return state
   }
 }
+
+export default reducer
 
 

@@ -18,7 +18,8 @@
       "@/routers*": ["src/routers*"],
       "@/pages*": ["src/pages*"],
       "@/utils*": ["src/utils*"],
-      "@/net*": ["src/net*"]
+      "@/net*": ["src/net*"],
+      "@/reducers*": ["src/reducers*"]
     }
   },
   "exclude": ["node_modules", "dist"],
