@@ -65,7 +65,6 @@ class MainLayout extends React.Component<IProps, IState> {
 
   renderMenu = (router: IRouter[]): React.ReactNode => {
     const menu = router.map((item: IRouter, index: number): React.ReactNode => {
-      console.log(item)
       if (item.children && item.children.length > 0) {
         return (
           <Menu.SubMenu key={item.path} title={<span>{item.parent && <UserOutlined />}<span>{item.name ?? "导航"}</span> </span>}>

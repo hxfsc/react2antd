@@ -7,6 +7,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const FilterWarningsPlugin = require("webpack-filter-warnings-plugin")
 //清除生成项目文件
 const { CleanWebpackPlugin } = require("clean-webpack-plugin")
+
 //antd 按需配置设置
 const tsAntdConfig = require("./antd.common")
 
@@ -44,7 +45,7 @@ module.exports = {
               experimentalWatchApi: true,
               transpileOnly: true,
               /* antd 按需加载 */
-              getCustomTransformers: () => tsAntdConfig()
+              getCustomTransformers: () => tsAntdConfig(),
             }
           }
         ]

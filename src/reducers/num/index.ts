@@ -1,3 +1,6 @@
+
+import { ThunkDispatch } from "redux-thunk"
+import { AnyAction } from "redux"
 export enum numConstants {
   ADD = "num/add",
   SUBTRACT = "num/subtract"
@@ -14,6 +17,13 @@ export const subtractAction = (data: number) => {
   return {
     type: numConstants.SUBTRACT,
     reload: data - 1
+  }
+}
+
+export const addActionAsync = (data: number) => {
+  return (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
+    const addData = data <= 0 ? 1 : data
+    setTimeout(() => { dispatch(addAction(addData)) }, addData * 1000)
   }
 }
 
