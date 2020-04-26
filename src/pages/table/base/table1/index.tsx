@@ -21,7 +21,6 @@ const Table1 = () => {
 
   useEffect((): void => {
     getData()
-
     return
   }, [])
 

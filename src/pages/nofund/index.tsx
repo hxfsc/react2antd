@@ -4,7 +4,6 @@ import { Link } from "react-router-dom"
 import * as styles from "./styles.scss"
 const NoFund = () => {
 
-
     return (
         <div className={styles["nofund"]}>
             <Result

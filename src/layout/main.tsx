@@ -1,6 +1,7 @@
 import * as React from "react"
 import { Route, Switch, Redirect, Link, RouteComponentProps } from "react-router-dom"
 import { Layout, Menu, Breadcrumb, Avatar, Dropdown } from "antd"
+import dayjs from "dayjs"
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -24,6 +25,9 @@ import { stylePadding0, styleFooter, styleMain } from "./styles"
 interface IProps extends RouteComponentProps { }
 
 interface IState { }
+
+
+const copyRightDate = dayjs().add(1, "year").format("YYYY")
 class MainLayout extends React.Component<IProps, IState> {
 
   private routerList: React.ReactElement[] = []
@@ -64,7 +68,7 @@ class MainLayout extends React.Component<IProps, IState> {
   }
 
   renderMenu = (router: IRouter[]): React.ReactNode => {
-    const menu = router.map((item: IRouter, index: number): React.ReactNode => {
+    const menu = router.map((item: IRouter): React.ReactNode => {
       if (item.children && item.children.length > 0) {
         return (
           <Menu.SubMenu key={item.path} title={<span>{item.parent && <UserOutlined />}<span>{item.name ?? "导航"}</span> </span>}>
@@ -100,15 +104,22 @@ class MainLayout extends React.Component<IProps, IState> {
 
   handleClickBreadcrumbClick = (parma: ClickParam): void => {
     const { key: selectedKeys } = parma
+    const { collapsed } = this.state
     const openKeys = urlPathToList(selectedKeys)
+
     this.setState({ selectedKeys, openKeys })
+
+    //切换breadcrumb menu会自动弹出, 解决弹出问题
+    if (collapsed) {
+      this.setState({ openKeys: [] })
+    }
   }
 
   renderOverLay = (children: IRouter[]): React.ReactElement => {
     if (children && Array.isArray(children)) {
       return (
         <Menu onClick={this.handleClickBreadcrumbClick}>
-          {children.map((item: IRouter, index: number): React.ReactNode => {
+          {children.map((item: IRouter): React.ReactNode => {
             let menuItemPath = ""
             if (item.children) {
               menuItemPath = item.children[0].path
@@ -133,6 +144,7 @@ class MainLayout extends React.Component<IProps, IState> {
   }
 
   handleOpenChangeMenu = (openKeys: string[]): void => {
+    const { collapsed } = this.state
     this.setState({ openKeys })
   }
 
@@ -164,8 +176,8 @@ class MainLayout extends React.Component<IProps, IState> {
         <Sider className={styles["sider"]} trigger={null} collapsible collapsed={collapsed} collapsedWidth={80}>
           <div className={styles["logo"]} />
           <Menu
-            theme="dark"
-            mode="inline"
+            mode={"inline"}
+            theme={"dark"}
             openKeys={openKeys}
             selectedKeys={selectedKeys}
             onClick={this.handleClickMenu}
@@ -181,7 +193,7 @@ class MainLayout extends React.Component<IProps, IState> {
             </div>
             <div className={styles["user"]}>
               <Dropdown overlay={this.renderDropDownItem} placement={"bottomLeft"}>
-                <Avatar size={"large"} className={styles["avatar"]}>hxfsc</Avatar>
+                <Avatar size={"large"} className={styles["avatar"]}>H</Avatar>
               </Dropdown>
             </div>
           </Header>
@@ -197,7 +209,7 @@ class MainLayout extends React.Component<IProps, IState> {
               </Switch>
             </div>
           </Content>
-          <Footer className={styles["footer"]} style={styleFooter}>Ant Design ©2018 Created by Ant UED</Footer>
+          <Footer className={styles["footer"]} style={styleFooter}>Ant Design © {copyRightDate} </Footer>
         </Layout>
       </Layout>
     )

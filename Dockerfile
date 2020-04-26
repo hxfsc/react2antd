@@ -1,20 +1,23 @@
 FROM node
 
+RUN npm install -g http-server
 
 RUN mkdir -p /usr/src/wwwroot/react2antd
 
 WORKDIR /usr/src/wwwroot/react2antd
 
-COPY package.json /usr/src/app/package.json
+COPY package.json /usr/src/wwwroot/react2antd/package.json
+COPY package-lock.json /usr/src/wwwroot/react2antd/package-lock.json
 
-RUN cd /usr/src/app/
-RUN npm i
+RUN cd /usr/src/wwwroot/react2antd
 
-
-RUN yarn --only=prod --registry=https://registry.npm.taobao.org
+RUN npm ci
 
 COPY . /usr/src/wwwroot/react2antd
 
-EXPOSE 3000
-CMD npm start
+RUN npm run build
+
+EXPOSE 80
+
+CMD http-server ./public -p 80
 
