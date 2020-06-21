@@ -19,7 +19,8 @@
       "@/pages*": ["src/pages*"],
       "@/utils*": ["src/utils*"],
       "@/net*": ["src/net*"],
-      "@/reducers*": ["src/reducers*"]
+      "@/reducers*": ["src/reducers*"],
+      "@/epics*":["src/epics*"]
     }
   },
   "exclude": ["node_modules", "dist"],

@@ -11,7 +11,7 @@ axios.defaults.withCredentials = false
 
 type IParam = AxiosRequestConfig
 
-export const service = (url:string, param: IParam = {}): Promise<IResponse> => {
+export const service = (url: string, param: IParam = {}): Promise<IResponse> => {
   return new Promise((resolve) => {
     const request: AxiosRequestConfig = {
       url,

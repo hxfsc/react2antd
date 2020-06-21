@@ -29,7 +29,8 @@ module.exports = {
       "@/routers": path.resolve(__dirname, "../src/routers"),
       "@/pages": path.resolve(__dirname, "../src/pages"),
       "@/net": path.resolve(__dirname, "../src/net"),
-      "@/reducers": path.resolve(__dirname, "../src/reducers")
+      "@/reducers": path.resolve(__dirname, "../src/reducers"),
+      "@/epics": path.resolve(__dirname, "../src/epics")
     }
   },
 
@@ -45,7 +46,7 @@ module.exports = {
               experimentalWatchApi: true,
               transpileOnly: true,
               /* antd 按需加载 */
-              getCustomTransformers: () => tsAntdConfig(),
+              getCustomTransformers: () => tsAntdConfig()
             }
           }
         ]
@@ -126,7 +127,7 @@ module.exports = {
     }),
 
     new FilterWarningsPlugin({
-      exclude: /mini-css-extract-plugin[^]*Conflicting order between:/
+      exclude: /mini-css-extract-plugin[^]*Conflicting order/
     })
   ]
 }

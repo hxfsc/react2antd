@@ -1,15 +1,22 @@
 import * as React from "react"
 import { Route, Switch, Redirect, Link, RouteComponentProps } from "react-router-dom"
 import { Layout, Menu, Breadcrumb, Avatar, Dropdown } from "antd"
-import dayjs from "dayjs"
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  LogoutOutlined,
-  KeyOutlined
-} from "@ant-design/icons"
+import { AreaChartOutlined, TableOutlined, BlockOutlined, DashboardOutlined, UngroupOutlined, RocketOutlined, MenuFoldOutlined, MenuUnfoldOutlined, LogoutOutlined, KeyOutlined, UserOutlined } from "@ant-design/icons"
 
+import dayjs from "dayjs"
+
+interface IIcons {
+  icon: string
+  component: React.ReactElement
+}
+
+const icons: IIcons[] = [
+  { icon: "AreaChartOutlined", component: <AreaChartOutlined /> },
+  { icon: "BlockOutlined", component: <BlockOutlined /> },
+  { icon: "DashboardOutlined", component: <DashboardOutlined /> },
+  { icon: "UngroupOutlined", component: <UngroupOutlined /> },
+  { icon: "TableOutlined", component: <TableOutlined /> }
+]
 
 const { Header, Sider, Content, Footer } = Layout
 
@@ -67,11 +74,19 @@ class MainLayout extends React.Component<IProps, IState> {
     }
   }
 
+  renderIcon = (item: IRouter): React.ReactElement => {
+
+    if (!item.icon) {
+      return <RocketOutlined />
+    }
+    return icons.find((list: IIcons) => list.icon === item.icon)?.component || <RocketOutlined />
+  }
+
   renderMenu = (router: IRouter[]): React.ReactNode => {
     const menu = router.map((item: IRouter): React.ReactNode => {
       if (item.children && item.children.length > 0) {
         return (
-          <Menu.SubMenu key={item.path} title={<span>{item.parent && <UserOutlined />}<span>{item.name ?? "导航"}</span> </span>}>
+          <Menu.SubMenu key={item.path} title={<span>{this.renderIcon(item)}<span>{item.name ?? "导航"}</span> </span>}>
             {this.renderMenu(item.children)}
           </Menu.SubMenu>
         )
@@ -79,7 +94,7 @@ class MainLayout extends React.Component<IProps, IState> {
       return (
         <Menu.Item key={item.path}>
           <Link to={item.path} className={styles["menu"]}>
-            {item.parent && <UserOutlined />}
+            {item.parent && this.renderIcon(item)}
             <span>{item.name ?? "导航"}</span>
           </Link>
         </Menu.Item >
@@ -101,14 +116,11 @@ class MainLayout extends React.Component<IProps, IState> {
     return this.routerList
   }
 
-
   handleClickBreadcrumbClick = (parma: ClickParam): void => {
     const { key: selectedKeys } = parma
     const { collapsed } = this.state
     const openKeys = urlPathToList(selectedKeys)
-
     this.setState({ selectedKeys, openKeys })
-
     //切换breadcrumb menu会自动弹出, 解决弹出问题
     if (collapsed) {
       this.setState({ openKeys: [] })

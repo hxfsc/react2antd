@@ -21,7 +21,7 @@ interface IRouter {
   /**
    * @param {React.Component} component 路由对应组件
   */
-  component?:any
+  component?: any
 
   /**
    * @param {IRouter} children 子路由

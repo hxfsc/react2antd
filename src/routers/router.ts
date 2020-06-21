@@ -1,6 +1,6 @@
 import Loadable from "react-loadable"
-import { IRouter } from "./interface"
 
+import { IRouter } from "./interface"
 
 import Loading from "@/pages/loading"
 
@@ -14,7 +14,6 @@ const Offline = Loadable({
   loading: Loading
 })
 
-
 const Table1 = Loadable({
   loader: () => import("@/pages/table/base/table1"),
   loading: Loading
@@ -25,11 +24,31 @@ const Table2 = Loadable({
   loading: Loading
 })
 
+const Observable = Loadable({
+  loader: () => import("@/pages/rxjs/base/observable"),
+  loading: Loading
+})
+
+const EventCallback = Loadable({
+  loader: () => import("@/pages/rxjs/base/eventcallback"),
+  loading: Loading
+})
+
+const EventState = Loadable({
+  loader: () => import("@/pages/rxjs/advanced/eventstate"),
+  loading: Loading
+})
+
+const RxObservable = Loadable({
+  loader: () => import("@/pages/rxjs/observable/base"),
+  loading: Loading
+})
 
 const router: IRouter[] = [
   {
     name: "仪表盘",
     path: "dashboard",
+    icon: "DashboardOutlined",
     parent: true,
     children: [
       {
@@ -47,12 +66,12 @@ const router: IRouter[] = [
             component: Offline
           }
         ]
-      },
+      }
     ]
   },
   {
     name: "表格",
-    icon: "dashboard",
+    icon: "TableOutlined",
     path: "table",
     parent: true,
     children: [
@@ -80,8 +99,56 @@ const router: IRouter[] = [
     ]
   },
   {
+    name: "RxJS",
+    icon: "BlockOutlined",
+    path: "rxjs",
+    parent: true,
+    component: Observable,
+    children: [
+      {
+        name: "基本",
+        path: "base",
+        parent: true,
+        children: [
+          {
+            name: "useObservable",
+            path: "observable",
+            component: Observable
+          },
+          {
+            name: "useEventCallback",
+            path: "eventcallback",
+            component: EventCallback
+          }
+        ]
+      },
+      {
+        name: "高级",
+        path: "advanced",
+        children: [
+          {
+            name: "eventstate",
+            path: "state",
+            component: EventState
+          }
+        ]
+      },
+      {
+        name: "RxObservable",
+        path: "rxobservable",
+        children: [
+          {
+            name: "base",
+            path: "base",
+            component: RxObservable
+          }
+        ]
+      }
+    ]
+  },
+  {
     name: "图表",
-    icon: "dashboard",
+    icon: "BlockOutlined",
     path: "charts",
     parent: true,
     component: Table2

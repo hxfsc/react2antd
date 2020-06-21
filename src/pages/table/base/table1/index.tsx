@@ -2,9 +2,11 @@ import qs from "qs"
 import * as React from "react"
 
 const { useEffect, useState } = React
+
 import { Table, Tag } from "antd"
 
 import { service, IResponse } from "@/net/service"
+import { table } from "@/net/url"
 
 import styles from "./index.scss"
 
@@ -25,7 +27,7 @@ const Table1 = () => {
   }, [])
 
   const getData = async () => {
-    const response: IResponse<IData[]> = await service("http://localhost:9001/table", { method: "post", data: qs.stringify({ tt: 11 }) })
+    const response: IResponse<IData[]> = await service(table.base, { method: "post", data: qs.stringify({ param: 11 }) })
     const { code } = response
     if (code === 200) {
       const { data = [] } = response
@@ -44,7 +46,7 @@ const Table1 = () => {
       title: "操作",
       key: "action",
       dataIndex: "action",
-      render: (text, record) => <Tag color="geekblue">{text}</Tag>
+      render: (text) => <Tag color="geekblue">{text}</Tag>
     }
   ]
   return (
