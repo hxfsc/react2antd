@@ -4,6 +4,12 @@ import { IRouter } from "./interface"
 
 import Loading from "@/pages/loading"
 
+
+const Profile = Loadable({
+  loader: () => import("@/pages/system/user/profile"),
+  loading: Loading
+})
+
 const Realtime = Loadable({
   loader: () => import("@/pages/dashboard/analysis/realtime"),
   loading: Loading
@@ -145,6 +151,12 @@ const router: IRouter[] = [
         ]
       }
     ]
+  },
+  {
+    name: "系统设置",
+    path: 'system',
+    parent: true,
+    component: Profile
   },
   {
     name: "图表",
