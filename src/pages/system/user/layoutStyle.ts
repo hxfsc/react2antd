@@ -1,4 +1,4 @@
-import {Form, FormItemProps} from "antd"
+import {Form} from "antd"
 
 
 export const layout = {
@@ -6,7 +6,7 @@ export const layout = {
   sm: { span: 8 }
 }
 
-export const formItemLayout:FormItemProps = {
+export const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
     sm: { span: 8 }

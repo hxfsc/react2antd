@@ -9,7 +9,6 @@ import styles from "./styles.scss"
 interface IProps extends RouteComponentProps { }
 
 
-
 const Login: React.FC<IProps> = (props) => {
 
   const onFinish = () => {
