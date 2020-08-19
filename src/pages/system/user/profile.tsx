@@ -1,19 +1,22 @@
 import * as React from "react"
-import { Form, Input, Row, Col, Button } from "antd"
+import { Form, Input, Row, Col, Button, Space } from "antd"
 import { layout, formItemLayout } from "./layoutStyle"
 
 const Profile: React.FC = () => {
   const { useState } = React
   const [form] = Form.useForm()
 
-  const [username, setUserName] = useState()
-  const [passwd, setPasswd] = useState()
+  const [username, setUserName] = useState<string>()
+  const [passwd, setPasswd] = useState<string>()
 
   const submit = () => {
-    form.validateFields().then((error: any, values: any) => {
-      console.log(error)
+    form.validateFields().then((values) => {
       console.log(values)
     })
+  }
+
+  const reset = () => {
+    form.resetFields()
   }
 
   return (
@@ -34,9 +37,18 @@ const Profile: React.FC = () => {
 
       <Row>
         <Col {...layout}>
-          <Button type="primary" onClick={submit}>
-            确定
-          </Button>
+          <Form {...formItemLayout}>
+            <Form.Item label=" " colon={false}>
+              <Space size={"small"}>
+                <Button type={"primary"} onClick={submit}>
+                  确定
+                </Button>
+                <Button type={"default"} onClick={reset}>
+                  重置
+                </Button>
+              </Space>
+            </Form.Item>
+          </Form>
         </Col>
       </Row>
     </section>

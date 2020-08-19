@@ -9,6 +9,7 @@ interface CssExports {
   'logo': string;
   'main': string;
   'menu': string;
+  'notification': string;
   'sider': string;
   'trigger': string;
   'user': string;

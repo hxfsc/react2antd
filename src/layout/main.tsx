@@ -1,7 +1,20 @@
 import * as React from "react"
 import { Route, Switch, Redirect, Link, RouteComponentProps } from "react-router-dom"
-import { Layout, Menu, Breadcrumb, Avatar, Dropdown } from "antd"
-import { AreaChartOutlined, TableOutlined, BlockOutlined, DashboardOutlined, UngroupOutlined, RocketOutlined, MenuFoldOutlined, MenuUnfoldOutlined, LogoutOutlined, KeyOutlined, UserOutlined } from "@ant-design/icons"
+import { Layout, Menu, Breadcrumb, Avatar, Dropdown, Badge } from "antd"
+import {
+  AreaChartOutlined,
+  TableOutlined,
+  BlockOutlined,
+  DashboardOutlined,
+  UngroupOutlined,
+  RocketOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  LogoutOutlined,
+  KeyOutlined,
+  UserOutlined,
+  BellOutlined
+} from "@ant-design/icons"
 
 import dayjs from "dayjs"
 
@@ -29,14 +42,12 @@ import { ClickParam } from "antd/lib/menu"
 
 import { stylePadding0, styleFooter, styleMain } from "./styles"
 
-interface IProps extends RouteComponentProps { }
+interface IProps extends RouteComponentProps {}
 
-interface IState { }
-
+interface IState {}
 
 const copyRightDate = dayjs().add(1, "year").format("YYYY")
 class MainLayout extends React.Component<IProps, IState> {
-
   private routerList: React.ReactElement[] = []
 
   state = {
@@ -75,7 +86,6 @@ class MainLayout extends React.Component<IProps, IState> {
   }
 
   renderIcon = (item: IRouter): React.ReactElement => {
-
     if (!item.icon) {
       return <RocketOutlined />
     }
@@ -83,26 +93,35 @@ class MainLayout extends React.Component<IProps, IState> {
   }
 
   renderMenu = (router: IRouter[]): React.ReactNode => {
-    const menu = router.map((item: IRouter): React.ReactNode => {
-      if (item.children && item.children.length > 0) {
+    const menu = router.map(
+      (item: IRouter): React.ReactNode => {
+        if (item.children && item.children.length > 0) {
+          return (
+            <Menu.SubMenu
+              key={item.path}
+              title={
+                <span>
+                  {this.renderIcon(item)}
+                  <span>{item.name ?? "导航"}</span>{" "}
+                </span>
+              }
+            >
+              {this.renderMenu(item.children)}
+            </Menu.SubMenu>
+          )
+        }
         return (
-          <Menu.SubMenu key={item.path} title={<span>{this.renderIcon(item)}<span>{item.name ?? "导航"}</span> </span>}>
-            {this.renderMenu(item.children)}
-          </Menu.SubMenu>
+          <Menu.Item key={item.path}>
+            <Link to={item.path} className={styles["menu"]}>
+              {item.parent && this.renderIcon(item)}
+              <span>{item.name ?? "导航"}</span>
+            </Link>
+          </Menu.Item>
         )
       }
-      return (
-        <Menu.Item key={item.path}>
-          <Link to={item.path} className={styles["menu"]}>
-            {item.parent && this.renderIcon(item)}
-            <span>{item.name ?? "导航"}</span>
-          </Link>
-        </Menu.Item >
-      )
-    })
+    )
     return menu
   }
-
 
   renderRouter = (router: IRouter[]): React.ReactNode => {
     router.forEach((item: IRouter) => {
@@ -131,15 +150,21 @@ class MainLayout extends React.Component<IProps, IState> {
     if (children && Array.isArray(children)) {
       return (
         <Menu onClick={this.handleClickBreadcrumbClick}>
-          {children.map((item: IRouter): React.ReactNode => {
-            let menuItemPath = ""
-            if (item.children) {
-              menuItemPath = item.children[0].path
-            } else {
-              menuItemPath = item.path
+          {children.map(
+            (item: IRouter): React.ReactNode => {
+              let menuItemPath = ""
+              if (item.children) {
+                menuItemPath = item.children[0].path
+              } else {
+                menuItemPath = item.path
+              }
+              return (
+                <Menu.Item key={menuItemPath}>
+                  <Link to={menuItemPath}>{item.name}</Link>
+                </Menu.Item>
+              )
             }
-            return <Menu.Item key={menuItemPath}><Link to={menuItemPath}>{item.name}</Link></Menu.Item>
-          })}
+          )}
         </Menu>
       )
     }
@@ -152,11 +177,14 @@ class MainLayout extends React.Component<IProps, IState> {
 
     const breadcrumbs: IRouter[] = routerMatchBreadcrumb(router, urlList)
 
-    return breadcrumbs.map((item: IRouter, index: number) => <Breadcrumb.Item key={index} overlay={this.renderOverLay(item.children)}>{item.name}</Breadcrumb.Item>)
+    return breadcrumbs.map((item: IRouter, index: number) => (
+      <Breadcrumb.Item key={index} overlay={this.renderOverLay(item.children)}>
+        {item.name}
+      </Breadcrumb.Item>
+    ))
   }
 
   handleOpenChangeMenu = (openKeys: string[]): void => {
-    const { collapsed } = this.state
     this.setState({ openKeys })
   }
 
@@ -166,17 +194,27 @@ class MainLayout extends React.Component<IProps, IState> {
   }
 
   renderDropDownItem = () => {
-
     const logout = () => {
-      const { history: { push } } = this.props
+      const {
+        history: { push }
+      } = this.props
       push("/login")
     }
 
     return (
       <Menu>
-        <Menu.Item key="1"><UserOutlined />个人中心</Menu.Item>
-        <Menu.Item key="2"><KeyOutlined />修改密码</Menu.Item>
-        <Menu.Item key="3" onClick={logout}><LogoutOutlined />退出</Menu.Item>
+        <Menu.Item key="1">
+          <UserOutlined />
+          个人中心
+        </Menu.Item>
+        <Menu.Item key="2">
+          <KeyOutlined />
+          修改密码
+        </Menu.Item>
+        <Menu.Item key="3" onClick={logout}>
+          <LogoutOutlined />
+          退出
+        </Menu.Item>
       </Menu>
     )
   }
@@ -187,31 +225,28 @@ class MainLayout extends React.Component<IProps, IState> {
       <Layout className={styles["dashboard"]}>
         <Sider className={styles["sider"]} trigger={null} collapsible collapsed={collapsed} collapsedWidth={80}>
           <div className={styles["logo"]} />
-          <Menu
-            mode={"inline"}
-            theme={"dark"}
-            openKeys={openKeys}
-            selectedKeys={selectedKeys}
-            onClick={this.handleClickMenu}
-            onOpenChange={this.handleOpenChangeMenu}>
+          <Menu mode={"inline"} theme={"dark"} openKeys={openKeys} selectedKeys={selectedKeys} onClick={this.handleClickMenu} onOpenChange={this.handleOpenChangeMenu}>
             {this.renderMenu(router)}
           </Menu>
         </Sider>
 
         <Layout className={styles["site-layout"]} style={{ marginLeft: collapsed ? "80px" : "200px" }}>
           <Header className={styles["header"]} style={stylePadding0}>
-            <div>
-              {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, { className: styles["trigger"], onClick: this.toggleCollapsed })}
-            </div>
+            <div>{React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, { className: styles["trigger"], onClick: this.toggleCollapsed })}</div>
             <div className={styles["user"]}>
+              <div className={styles["notification"]}>
+                <Badge count={5}>
+                  <BellOutlined style={{fontSize: 20}} />
+                </Badge>
+              </div>
               <Dropdown overlay={this.renderDropDownItem} placement={"bottomLeft"}>
-                <Avatar size={"large"} className={styles["avatar"]}>H</Avatar>
+                <Avatar size={"large"} className={styles["avatar"]}>
+                  H
+                </Avatar>
               </Dropdown>
             </div>
           </Header>
-          <Breadcrumb className={styles["breadcrumb"]}>
-            {this.renderBreadcrumb()}
-          </Breadcrumb>
+          <Breadcrumb className={styles["breadcrumb"]}>{this.renderBreadcrumb()}</Breadcrumb>
           <Content>
             <div className={styles["main"]} style={styleMain}>
               <Switch>
@@ -221,7 +256,9 @@ class MainLayout extends React.Component<IProps, IState> {
               </Switch>
             </div>
           </Content>
-          <Footer className={styles["footer"]} style={styleFooter}>Ant Design © {copyRightDate} </Footer>
+          <Footer className={styles["footer"]} style={styleFooter}>
+            Ant Design © {copyRightDate}{" "}
+          </Footer>
         </Layout>
       </Layout>
     )
