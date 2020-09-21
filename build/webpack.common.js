@@ -1,4 +1,5 @@
 const path = require("path")
+const os = require("os")
 //html文件模板
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 //抽离样式文件
@@ -10,6 +11,10 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 
 //antd 按需配置设置
 const tsAntdConfig = require("./antd.common")
+
+//win平台下 less文件不作排除操作
+const isWin32 = os.platform() === "win32"
+const lessWinIncludeExclude = !isWin32 && { exclude: /node_modules/, include: path.resolve(__dirname, "/node_modules/antd") }
 
 const webpack = require("webpack")
 
@@ -53,7 +58,7 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        include: /node_modules\/antd/,
+        ...lessWinIncludeExclude,
         use: [
           MiniCssExtractPlugin.loader,
           "css-loader",
