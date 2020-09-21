@@ -14,9 +14,10 @@ const tsAntdConfig = require("./antd.common")
 
 //win平台下 node_modules目录下less文件不作排除操作
 const isWin32 = os.platform() === "win32"
-const lessWinIncludeExclude = !isWin32 && { exclude: /node_modules/, include: path.resolve(__dirname, "/node_modules/antd") }
+const lessWinIncludeExclude = !isWin32 ? { include: path.resolve(__dirname, "/node_modules/antd"), /*exclude: path.resolve(__dirname, "/node_modules")*/ } : {}
 
 const webpack = require("webpack")
+
 
 module.exports = {
   entry: [path.resolve(__dirname, "../src/index.tsx")],
@@ -48,7 +49,7 @@ module.exports = {
           {
             loader: "ts-loader",
             options: {
-              experimentalWatchApi: true,
+              //experimentalWatchApi: true,
               transpileOnly: true,
               /* antd 按需加载 */
               getCustomTransformers: () => tsAntdConfig()

@@ -7,7 +7,7 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "target": "es5",
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "node",
     "lib": ["dom", "es7", "es6", "es5"],
     "allowJs": true,
