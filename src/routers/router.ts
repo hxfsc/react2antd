@@ -50,6 +50,12 @@ const RxObservable = Loadable({
   loading: Loading
 })
 
+
+const SagaBase = Loadable({
+  loader: () => import("@/pages/saga/base"),
+  loading: Loading
+})
+
 const router: IRouter[] = [
   {
     name: "仪表盘",
@@ -164,6 +170,20 @@ const router: IRouter[] = [
     path: "charts",
     parent: true,
     component: Table2
+  },
+  {
+    name: "saga",
+    icon: "BlockOutlined",
+    path: "saga",
+    parent: true,
+    component: SagaBase,
+    children: [
+      {
+        name: "基础",
+        path: "base",
+        component: SagaBase
+      }
+    ]
   }
 ]
 
