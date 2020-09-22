@@ -57,7 +57,12 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        include: () => !isWin32 && "/node_modules/antd",
+        include: () => {
+          if (isWin32) {
+            return "/"
+          }
+          return "/node_modules/antd"
+        },
         use: [
           MiniCssExtractPlugin.loader,
           "css-loader",
