@@ -5,10 +5,7 @@ import rootReducers from "@/reducers/index"
 
 const sagaMiddleware = createSagaMiddleware()
 
-
-const epicMiddleware = createEpicMiddleware()
-
-const store = createStore(rootReducers, composeWithDevTools(applyMiddleware(thunk), applyMiddleware(epicMiddleware)))
+const store = createStore(rootReducers, composeWithDevTools(applyMiddleware(sagaMiddleware)))
 
 sagaMiddleware.run()
 
