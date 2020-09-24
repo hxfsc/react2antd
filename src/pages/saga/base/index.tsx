@@ -1,19 +1,20 @@
 import * as React from "react"
+import {connect} from "react-redux"
 import { Button, Divider, Space } from "antd"
-
+import {increment, deIncrement} from "@/reducers/saga"
 const SagaBase = (props) => {
-    const { value = 1, onIncrementAsync, onIncrement, onDecrement } = props
+    const { saga = 1, increment, deIncrement } = props
     return (
         <>
-            <h1>{value}</h1>
+            <h1>{saga}</h1>
             <Divider />
             <Space>
-                <Button onClick={onIncrementAsync} type={"primary"}>Increment after 1 second</Button>
-                <Button onClick={onIncrement}>Increment</Button>
-                <Button onClick={onDecrement} type={"primary"} danger>Decrement</Button>
+                <Button onClick={increment} type={"primary"}>Increment after 1 second</Button>
+                <Button onClick={deIncrement}>Increment</Button>
+                <Button onClick={deIncrement} type={"primary"} danger>Decrement</Button>
             </Space>
         </>
     )
 }
 
-export default SagaBase
+export default connect(({saga})=>({saga}), {increment, deIncrement})(SagaBase)
