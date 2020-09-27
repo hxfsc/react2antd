@@ -1,4 +1,4 @@
-const initState = 0
+const initState = 10
 
 export const deIncrement = (state) => {
   return state - 1
