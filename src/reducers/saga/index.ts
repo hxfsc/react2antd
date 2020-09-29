@@ -1,24 +1,27 @@
 const initState = 10
 
-export const deIncrement = (state) => {
+
+export const increment = () => ({ type: "INCREMENT" })
+
+export const deIncrement = (reload) => ({ type: "DEINCREMENT", reload })
+
+
+const _increment = (state) => {
   return state - 1
 }
 
-export const increment = (state) => {
-  return state + 1
+const _deIncrement = (state, reload) => {
+  console.log(reload)
+  return state + reload
 }
 
 const reducer = (state = initState, action) => {
-  // return {
-  //   "INCREMENT": increment(state),
-  //   "DEINCREMENT": deIncrement(state),
-  // }[action.type]
-  console.log(action)
+
   switch (action.type) {
     case "INCREMENT":
-      return increment(state)
+      return _increment(state)
     case "DEINCREMENT":
-      return deIncrement(state)
+      return _deIncrement(state, action.reload)
     default:
       return state
   }
