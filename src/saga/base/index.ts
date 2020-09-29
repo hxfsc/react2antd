@@ -2,7 +2,7 @@ import { takeEvery, put } from "redux-saga/effects"
 
 
 function* incrementAsync() {
-   yield put({ type: "INCREMENT" })
+   yield put({type: "INCREMENT"})
 }
 
 function* watchIncrementAsync() {

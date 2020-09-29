@@ -10,9 +10,9 @@ const SagaBase = (props) => {
             <h1>{saga}</h1>
             <Divider />
             <Space>
-                <Button onClick={incrementAsync} type={"primary"}>Increment after 1 second</Button>
-                <Button onClick={watchIncrementAsync}>Increment</Button>
-                <Button onClick={watchIncrementAsync} type={"primary"} danger>Decrement</Button>
+                <Button onClick={() => incrementAsync()} type={"primary"}>Increment after 1 second</Button>
+                <Button onClick={() => watchIncrementAsync()}>Increment</Button>
+                <Button onClick={() => watchIncrementAsync()} type={"primary"} danger>Decrement</Button>
             </Space>
         </>
     )

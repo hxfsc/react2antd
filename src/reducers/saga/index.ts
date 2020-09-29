@@ -13,7 +13,7 @@ const reducer = (state = initState, action) => {
   //   "INCREMENT": increment(state),
   //   "DEINCREMENT": deIncrement(state),
   // }[action.type]
-
+  console.log(action)
   switch (action.type) {
     case "INCREMENT":
       return increment(state)
